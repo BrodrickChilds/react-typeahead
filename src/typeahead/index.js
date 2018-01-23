@@ -26,6 +26,7 @@ var Typeahead = createReactClass({
     placeholder: PropTypes.string,
     disabled: PropTypes.bool,
     textarea: PropTypes.bool,
+    clearOnOptionSelected: PropTypes.bool,
     inputProps: PropTypes.object,
     onOptionSelected: PropTypes.func,
     onChange: PropTypes.func,
@@ -69,6 +70,7 @@ var Typeahead = createReactClass({
       placeholder: "",
       disabled: false,
       textarea: false,
+      clearOnOptionSelected: false,
       inputProps: {},
       onOptionSelected: function(option) {},
       onChange: function(event) {},
@@ -199,10 +201,12 @@ var Typeahead = createReactClass({
     var formInputOption = Accessor.generateOptionToStringFor(this.props.formInputOption || displayOption);
     var formInputOptionString = formInputOption(option);
 
-    nEntry.value = optionString;
-    this.setState({searchResults: this.getOptionsForValue(optionString, this.props.options),
+    var valueAfterSelect = this.props.clearOnOptionSelected ? '' : optionString
+
+    nEntry.value = valueAfterSelect;
+    this.setState({searchResults: this.getOptionsForValue(valueAfterSelect, this.props.options),
                    selection: formInputOptionString,
-                   entryValue: optionString,
+                   entryValue: valueAfterSelect,
                    showResults: false});
     return this.props.onOptionSelected(option, event);
   },
